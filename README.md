@@ -8,7 +8,7 @@
 
 [无法加载图片的点这里](https://blog.csdn.net/qq_23204557/article/details/105934126 "GitHub的raw.githubusercontent.com的DNS被污染，修改Hosts解决")
 
-![badapple_hot](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_hot_1024x576.png)
+![badapple_hot](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_hot_1024x576.jpg)
 
 [1920×1080](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_hot_1920x1080.png)
 
