@@ -6,7 +6,7 @@
 
 右声道：垂直坐标
 
-[无法加载图片点这里](https://blog.csdn.net/qq_23204557/article/details/105934126 "GitHub的raw.githubusercontent.com的DNS被污染，修改Hosts解决")
+[无法加载图片的点这里](https://blog.csdn.net/qq_23204557/article/details/105934126 "GitHub的raw.githubusercontent.com的DNS被污染，修改Hosts解决")
 
 ![badapple_hot](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_hot.png)
 
@@ -105,11 +105,11 @@ Bou = bwboundaries(vidFrame); % 获取边界坐标
 
 直接将获取的坐标首尾相接并不合适，这些线条的顺序不合理，画完一条线画下一条时，跨越的距离可能很长，显示在示波器上的杂乱线条更加明显
 
-![badapple_7](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_7.png "多余的线条")
+![badapple_7](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_7.svg "多余的线条")
 
 也会使波形中的跳变幅度增大，产生更多的高频成分。
 
-![badapple_9](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_9.png "多余的跳变")
+![badapple_9](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_9.svg "多余的跳变")
 
 所以可以优化一下线条的顺序
 
@@ -161,11 +161,11 @@ bouDot = cell2mat(BouTemp); % 边界上的每一点
 
 一般来说，排序后多余的连线会更短
 
-![badapple_8](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_8.png)
+![badapple_8](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_8.svg)
 
 并减少多余的跳变
 
-![badapple_10](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_10.png)
+![badapple_10](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_10.svg)
 
 将排好序的线条坐标连成一串后，统计坐标点的数量`bouDotNum`。如果大于 0 ，将坐标点数重采样到`dotNum`个，然后重复`scanNumPF`次。如果等于 0 ，说明无画面内容，全部填充 NaN 。
 
@@ -181,7 +181,7 @@ end
 
 为了在跳变处不产生中间值，重采样的方法为最邻近法
 
-![badapple_11](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_11.png "重采样的方法")
+![badapple_11](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_11.svg "重采样的方法")
 
 将这一帧所有坐标点放入`bouDotxy{k}`
 
@@ -230,7 +230,7 @@ bouDotxy(isnan(bouDotxy)) = 0;
 audiowrite([wavPath wavFile], bouDotxy, Fs)
 ```
 
-![badapple_13](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_13.png)
+![badapple_13](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_13.svg)
 
 不要使用有损压缩
 
@@ -257,6 +257,6 @@ test = [x' y'];
 audiowrite('校准圆.wav',test,fs)
 ```
 
-![badapple_15](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_15.png)
+![badapple_15](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_15.svg)
 
 ![badapple_16](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_16.gif)
