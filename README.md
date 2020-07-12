@@ -179,7 +179,7 @@ else
 end
 ```
 
-为了在跳变处不产生中间值，重采样的方法为最近邻法
+为了在跳变处不产生中间值，重采样的方法为最邻近法
 
 ![badapple_11](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_11.png "重采样的方法")
 
