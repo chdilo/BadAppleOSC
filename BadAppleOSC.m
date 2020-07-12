@@ -14,6 +14,7 @@ vidFrameRate = Vid.FrameRate; % 帧率
 nFrames = Vid.NumFrames; % 总帧数
 vidHeight = Vid.Height; % 高度
 vidWidth = Vid.Width; % 宽度
+Vid.CurrentTime = 0; % 指定应在距视频开头多少秒的位置开始读取
 
 dotNumPF = Fs/vidFrameRate; % 每帧点数
 dotNum = dotNumPF/scanNumPF; % 每次扫描点数
@@ -49,7 +50,7 @@ while hasFrame(Vid)
     end
     
     bouDot = cell2mat(BouTemp); % 边界上的每一点
-    bouDotNum = length(bouDot); % 每一帧边界点的数量
+    bouDotNum = length(bouDot); % 每一帧点的数量
     if bouDotNum > 0
         bouDot = resample(bouDot, dotNum, bouDotNum, 0); % 调整点数
         bouDotTemp = repmat(bouDot, scanNumPF, 1); % 每帧重复扫描scanNumPF次
@@ -69,9 +70,9 @@ bouDotxy = cell2mat(bouDotxy);
 bouDotxy = bouDotxy - mean(bouDotxy, 'omitnan'); % 移除直流
 bouDotxy = bouDotxy / max(abs(bouDotxy),[],'all'); % 归一化
 % 顺时针旋转90°
-bouDotxy(:,1) = -bouDotxy(:,1);
-bouDotxy(:,[1 2]) = bouDotxy(:,[2 1]);
-% 无画面
+bouDotxy(:,1) = -bouDotxy(:,1); % 水平翻转
+bouDotxy(:,[1 2]) = bouDotxy(:,[2 1]); % 交换xy
+% 无画面的点
 bouDotxy(isnan(bouDotxy)) = 0;
 
 %% 绘制PSD
