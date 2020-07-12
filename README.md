@@ -10,7 +10,7 @@
 
 ![badapple_hot](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_hot.png)
 
-## MATLAB脚本的详细过程
+## 1. MATLAB脚本的详细过程
 
 脚本中预设的每帧扫描次数`scanNumPF`为 2 次（示波器的光点在屏幕上画 2 次，且原视频帧率为 20 帧，这样输出的波形基频为 2×20 = 40 Hz，避免音频设备在听域范围外的衰减），输出音频采样率`Fs`为 48 kHz（采样位数为默认的 16 位，这是完全足够的，而图像越复杂时采样率越高越好）。
 
@@ -26,7 +26,7 @@ Fs = 48e3; % 采样率
 [wavFile, wavPath] = uiputfile({'*.wav';'*.flac'}, '保存音频文件', 'PlayMe');
 ```
 
-### 读取视频文件
+### 1.1 读取视频文件
 
 首先创建`VideoReader`对象`Vid`，用于读取原视频数据。
 
@@ -50,7 +50,7 @@ dotNumPF = Fs/vidFrameRate; % 每帧点数
 dotNum = dotNumPF/scanNumPF; % 每次扫描点数
 ```
 
-### 读取帧并处理
+### 1.2 读取帧并处理
 
 接着一帧一帧读取图像
 
@@ -189,6 +189,8 @@ end
 bouDotxy{k} = bouDotTemp; % 所有要描的点的坐标
 ```
 
+### 1.3 调整幅度
+
 处理完所有的视频帧后，将所有帧的坐标连成一串
 
 ```matlab
@@ -222,11 +224,21 @@ bouDotxy(:,[1 2]) = bouDotxy(:,[2 1]); % 交换xy
 bouDotxy(isnan(bouDotxy)) = 0;
 ```
 
-输出结果
+### 1.4 输出音频文件
+
+```matlab
+audiowrite([wavPath wavFile], bouDotxy, Fs)
+```
 
 ![badapple_13](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_13.png)
 
-## 硬件连接
+不要使用有损压缩
+
+![badapple_17](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_17.svg)
+
+![badapple_18](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_18.svg)
+
+## 2. 硬件连接
 
 将示波器视图设置为 X-Y 模式，连接如下
 
