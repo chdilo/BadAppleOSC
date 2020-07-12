@@ -54,7 +54,7 @@ dotNum = dotNumPF/scanNumPF; % 每次扫描点数
 
 ```matlab
 while hasFrame(Vid)
-	vidFrame = readFrame(Vid); % 读取每帧图像
+    vidFrame = readFrame(Vid); % 读取每帧图像
 ```
 
 以原视频 56 秒处为例
@@ -170,10 +170,10 @@ bouDot = cell2mat(BouTemp); % 边界上的每一点
 ```matlab
 bouDotNum = length(bouDot); % 每一帧点的数量
 if bouDotNum > 0
-	bouDot = resample(bouDot, dotNum, bouDotNum, 0); % 调整点数
-	bouDotTemp = repmat(bouDot, scanNumPF, 1); % 每帧重复扫描scanNumPF次
+    bouDot = resample(bouDot, dotNum, bouDotNum, 0); % 调整点数
+    bouDotTemp = repmat(bouDot, scanNumPF, 1); % 每帧重复扫描scanNumPF次
 else
-	bouDotTemp = NaN(dotNumPF, 2); % 无画面
+    bouDotTemp = NaN(dotNumPF, 2); % 无画面
 end
 ```
 
