@@ -12,7 +12,7 @@
 
 [1920×1080](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_hot_1920x1080.png)
 
-[2560x1440](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_hot_2560x1440.png)
+[2560×1440](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_hot_2560x1440.png)
 
 ## 1. MATLAB脚本的详细过程
 
