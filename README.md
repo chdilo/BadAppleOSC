@@ -12,6 +12,8 @@
 
 [1920×1080](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_hot_1920x1080.png)
 
+[2560x1440](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_hot_2560x1440.png)
+
 ## 1. MATLAB脚本的详细过程
 
 脚本中预设的每帧扫描次数`scanNumPF`为 2 次（示波器的光点在屏幕上画 2 次，且原视频帧率为 20 帧，这样输出的波形基频为 2×20 = 40 Hz，避免音频设备在听域范围外的衰减），输出音频采样率`Fs`为 48 kHz（采样位数为默认的 16 位，这是完全足够的，而图像越复杂时采样率越高越好）。
