@@ -15,6 +15,7 @@ nFrames = Vid.NumFrames; % 总帧数
 vidHeight = Vid.Height; % 高度
 vidWidth = Vid.Width; % 宽度
 Vid.CurrentTime = 0; % 指定应在距视频开头多少秒的位置开始读取
+WHR = vidWidth/vidHeight;
 
 dotNumPF = Fs/vidFrameRate; % 每帧点数
 dotNum = dotNumPF/scanNumPF; % 每次扫描点数
@@ -23,30 +24,21 @@ dotNum = dotNumPF/scanNumPF; % 每次扫描点数
 disp('正在处理帧...');
 Fig = waitbar(0,'正在处理帧...');
 bouDotxy = cell(dotNumPF*nFrames, 1);
-p0 = [(vidHeight+1)/2, (vidWidth+1)/2];
+p0 = [(1024/WHR+1)/2, (1024+1)/2];
 k = 1;
 while hasFrame(Vid)
     vidFrame = readFrame(Vid); % 读取每帧图像
     vidFrame = im2double(vidFrame);
     vidFrame = rgb2gray(vidFrame);
-    vidFrame = imgaussfilt(vidFrame, vidWidth/dotNum) >= 0.5; % 滤波
+    vidFrame = imresize(vidFrame,[NaN 1024]);
+    vidFrame = imgaussfilt(vidFrame, 1024/dotNum) >= 0.5; % 滤波
     vidFrame = edge(double(vidFrame), 'Canny'); % 边缘检测
     Bou = bwboundaries(vidFrame); % 获取边界坐标
 
     % 优化顺序
-    bouNum = length(Bou);
-    BouTemp = cell(bouNum, 1);
-    for j = 1:bouNum
-        bouNumLeft = length(Bou);
-        dist = zeros(bouNumLeft, 1);
-        for i = 1:bouNumLeft
-            p1 = Bou{i}(1,:);
-            dist(i) = norm(p0-p1);
-        end
-        [~, indx] = min(dist);
-        BouTemp{j} = Bou{indx};
-        p0 = Bou{indx}(end,:);
-        Bou(indx) = [];
+    [BouTemp,p0] = reorderlines(Bou,p0);
+    if isempty(Bou)
+        p0 = [(1024/WHR+1)/2, (1024+1)/2];
     end
     
     bouDot = cell2mat(BouTemp); % 边界上的每一点
@@ -59,7 +51,8 @@ while hasFrame(Vid)
     end
 
     bouDotxy{k} = bouDotTemp; % 所有要描的点的坐标
-    waitbar(k/nFrames, Fig, sprintf('正在处理帧...%.2f%%',k/nFrames*100));
+    waitbar(k/nFrames, Fig,...
+        sprintf('正在处理帧...%.2f%%(%u/%u)',k/nFrames*100,k,nFrames));
     k = k + 1;
 end
 close(Fig)
