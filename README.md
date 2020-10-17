@@ -16,7 +16,7 @@
 
 [3840×2160](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_hot_3840x2160.png)
 
-## 1. MATLAB脚本的详细过程
+## 1. MATLAB 脚本的详细过程
 
 脚本中预设的每帧扫描次数`scanNumPF`为 2 次（示波器的光点在屏幕上画 2 次，且原视频帧率为 20 帧，这样输出的波形基频为 2×20 = 40 Hz，避免音频设备在听域范围外的衰减），输出音频采样率`Fs`为 48 kHz（采样位数为默认的 16 位，这是完全足够的，而图像越复杂时采样率越高越好）。
 
@@ -93,7 +93,7 @@ vidFrame = imgaussfilt(vidFrame, vidWidth/dotNum) >= 0.5; % 滤波
 
 ![badapple_3](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_3.png "采样率为 48kHz 时的滤波结果")
 
-Canny算子边缘检测，得到边缘的线条
+Canny 算子边缘检测，得到边缘的线条
 
 ```matlab
 vidFrame = edge(double(vidFrame), 'Canny'); % 边缘检测
@@ -223,7 +223,7 @@ bouDotxy(:,1) = -bouDotxy(:,1); % 水平翻转
 bouDotxy(:,[1 2]) = bouDotxy(:,[2 1]); % 交换xy
 ```
 
-将无数值的点替换为 0 
+将无数值的点替换为 0
 
 ```matlab
 % 无画面的点
