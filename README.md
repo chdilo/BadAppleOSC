@@ -6,7 +6,7 @@
 
 右声道：垂直坐标
 
-[无法加载图片的点这里](https://gitee.com/chdilo/BadAppleOSC/ "Gitee")
+无法加载图片的话，在hosts文件中添加`199.232.68.133 raw.githubusercontent.com`，或[点这里](https://gitee.com/chdilo/BadAppleOSC/ "Gitee")
 
 ![badapple_hot](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_hot_1024x576.jpg)
 
