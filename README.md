@@ -6,7 +6,7 @@
 
 右声道：垂直坐标
 
-[无法加载图片的点这里](https://blog.csdn.net/qq_23204557/article/details/105934126 "GitHub的raw.githubusercontent.com的DNS被污染，修改Hosts解决")
+[无法加载图片的点这里](https://gitee.com/chdilo/BadAppleOSC/ "Gitee")
 
 ![badapple_hot](https://raw.githubusercontent.com/chdilo/pictures/master/img/badapple_hot_1024x576.jpg)
 
