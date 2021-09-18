@@ -1,85 +1,85 @@
 clear,clc,close all
-% ÊäÈëÒ»¸öÊÓÆµ,Êä³öÆä¶şÖµ»¯ºó±ßÔµµãµÄ×ø±ê×é³ÉµÄ²¨ĞÎÎÄ¼ş
-% ×óÉùµÀ:Ë®Æ½×ø±ê
-% ÓÒÉùµÀ:´¹Ö±×ø±ê
-scanNumPF = 2; % Ã¿Ö¡É¨Ãè´ÎÊı
-Fs = 48e3; % ²ÉÑùÂÊ
-[vidFile, vidPath] = uigetfile('*.avi;*.mp4', 'Ñ¡ÔñÊÓÆµÎÄ¼ş', '22118703_5_0.mp4');
-[wavFile, wavPath] = uiputfile({'*.wav';'*.flac'}, '±£´æÒôÆµÎÄ¼ş', 'PlayMe');
+% è¾“å…¥ä¸€ä¸ªè§†é¢‘,è¾“å‡ºå…¶äºŒå€¼åŒ–åè¾¹ç¼˜ç‚¹çš„åæ ‡ç»„æˆçš„æ³¢å½¢æ–‡ä»¶
+% å·¦å£°é“:æ°´å¹³åæ ‡
+% å³å£°é“:å‚ç›´åæ ‡
+scanNumPF = 2; % æ¯å¸§æ‰«ææ¬¡æ•°
+Fs = 48e3; % é‡‡æ ·ç‡
+[vidFile, vidPath] = uigetfile('*.avi;*.mp4', 'é€‰æ‹©è§†é¢‘æ–‡ä»¶', '22118703_5_0.mp4');
+[wavFile, wavPath] = uiputfile({'*.wav';'*.flac'}, 'ä¿å­˜éŸ³é¢‘æ–‡ä»¶', 'PlayMe');
 
-%% ¶ÁÈ¡ÊÓÆµÎÄ¼ş
-disp('ÕıÔÚ¼ÓÔØÎÄ¼ş...');
+%% è¯»å–è§†é¢‘æ–‡ä»¶
+disp('æ­£åœ¨åŠ è½½æ–‡ä»¶...');
 Vid = VideoReader([vidPath vidFile]);
-vidFrameRate = Vid.FrameRate; % Ö¡ÂÊ
-nFrames = Vid.NumFrames; % ×ÜÖ¡Êı
-vidHeight = Vid.Height; % ¸ß¶È
-vidWidth = Vid.Width; % ¿í¶È
-Vid.CurrentTime = 0; % Ö¸¶¨Ó¦ÔÚ¾àÊÓÆµ¿ªÍ·¶àÉÙÃëµÄÎ»ÖÃ¿ªÊ¼¶ÁÈ¡
+vidFrameRate = Vid.FrameRate; % å¸§ç‡
+nFrames = Vid.NumFrames; % æ€»å¸§æ•°
+vidHeight = Vid.Height; % é«˜åº¦
+vidWidth = Vid.Width; % å®½åº¦
+Vid.CurrentTime = 0; % æŒ‡å®šåº”åœ¨è·è§†é¢‘å¼€å¤´å¤šå°‘ç§’çš„ä½ç½®å¼€å§‹è¯»å–
 WHR = vidWidth/vidHeight;
 
-dotNumPF = Fs/vidFrameRate; % Ã¿Ö¡µãÊı
-dotNum = dotNumPF/scanNumPF; % Ã¿´ÎÉ¨ÃèµãÊı
+dotNumPF = Fs/vidFrameRate; % æ¯å¸§ç‚¹æ•°
+dotNum = dotNumPF/scanNumPF; % æ¯æ¬¡æ‰«æç‚¹æ•°
 
-%% ¶ÁÈ¡Ö¡²¢´¦Àí
-disp('ÕıÔÚ´¦ÀíÖ¡...');
-Fig = waitbar(0,'ÕıÔÚ´¦ÀíÖ¡...');
+%% è¯»å–å¸§å¹¶å¤„ç†
+disp('æ­£åœ¨å¤„ç†å¸§...');
+Fig = waitbar(0,'æ­£åœ¨å¤„ç†å¸§...');
 bouDotxy = cell(dotNumPF*nFrames, 1);
 p0 = [(1024/WHR+1)/2, (1024+1)/2];
 k = 1;
 while hasFrame(Vid)
-    vidFrame = readFrame(Vid); % ¶ÁÈ¡Ã¿Ö¡Í¼Ïñ
+    vidFrame = readFrame(Vid); % è¯»å–æ¯å¸§å›¾åƒ
     vidFrame = im2double(vidFrame);
     vidFrame = rgb2gray(vidFrame);
     vidFrame = imresize(vidFrame,[NaN 1024]);
-    vidFrame = imgaussfilt(vidFrame, 1024/dotNum) >= 0.5; % ÂË²¨
-    vidFrame = edge(double(vidFrame), 'Canny'); % ±ßÔµ¼ì²â
-    Bou = bwboundaries(vidFrame); % »ñÈ¡±ß½ç×ø±ê
+    vidFrame = imgaussfilt(vidFrame, 1024/dotNum) >= 0.5; % æ»¤æ³¢
+    vidFrame = edge(double(vidFrame), 'Canny'); % è¾¹ç¼˜æ£€æµ‹
+    Bou = bwboundaries(vidFrame); % è·å–è¾¹ç•Œåæ ‡
 
-    % ÓÅ»¯Ë³Ğò
+    % ä¼˜åŒ–é¡ºåº
     [BouTemp,p0] = reorderlines(Bou,p0);
     if isempty(Bou)
         p0 = [(1024/WHR+1)/2, (1024+1)/2];
     end
     
-    bouDot = cell2mat(BouTemp); % ±ß½çÉÏµÄÃ¿Ò»µã
-    bouDotNum = length(bouDot); % Ã¿Ò»Ö¡µãµÄÊıÁ¿
+    bouDot = cell2mat(BouTemp); % è¾¹ç•Œä¸Šçš„æ¯ä¸€ç‚¹
+    bouDotNum = length(bouDot); % æ¯ä¸€å¸§ç‚¹çš„æ•°é‡
     if bouDotNum > 0
-        bouDot = resample(bouDot, dotNum, bouDotNum, 0); % µ÷ÕûµãÊı
-        bouDotTemp = repmat(bouDot, scanNumPF, 1); % Ã¿Ö¡ÖØ¸´É¨ÃèscanNumPF´Î
+        bouDot = resample(bouDot, dotNum, bouDotNum, 0); % è°ƒæ•´ç‚¹æ•°
+        bouDotTemp = repmat(bouDot, scanNumPF, 1); % æ¯å¸§é‡å¤æ‰«æscanNumPFæ¬¡
     else
-        bouDotTemp = NaN(dotNumPF, 2); % ÎŞ»­Ãæ
+        bouDotTemp = NaN(dotNumPF, 2); % æ— ç”»é¢
     end
 
-    bouDotxy{k} = bouDotTemp; % ËùÓĞÒªÃèµÄµãµÄ×ø±ê
+    bouDotxy{k} = bouDotTemp; % æ‰€æœ‰è¦æçš„ç‚¹çš„åæ ‡
     waitbar(k/nFrames, Fig,...
-        sprintf('ÕıÔÚ´¦ÀíÖ¡...%.2f%%(%u/%u)',k/nFrames*100,k,nFrames));
+        sprintf('æ­£åœ¨å¤„ç†å¸§...%.2f%%(%u/%u)',k/nFrames*100,k,nFrames));
     k = k + 1;
 end
 close(Fig)
 
-%% µ÷Õû·ù¶È
-disp('µ÷Õû·ù¶È...')
+%% è°ƒæ•´å¹…åº¦
+disp('è°ƒæ•´å¹…åº¦...')
 bouDotxy = cell2mat(bouDotxy);
-bouDotxy = bouDotxy - mean(bouDotxy, 'omitnan'); % ÒÆ³ıÖ±Á÷
-bouDotxy = bouDotxy / max(abs(bouDotxy),[],'all'); % ¹éÒ»»¯
-% Ë³Ê±ÕëĞı×ª90¡ã
-bouDotxy(:,1) = -bouDotxy(:,1); % Ë®Æ½·­×ª
-bouDotxy(:,[1 2]) = bouDotxy(:,[2 1]); % ½»»»xy
-% ÎŞ»­ÃæµÄµã
+bouDotxy = bouDotxy - mean(bouDotxy, 'omitnan'); % ç§»é™¤ç›´æµ
+bouDotxy = bouDotxy / max(abs(bouDotxy),[],'all'); % å½’ä¸€åŒ–
+% é¡ºæ—¶é’ˆæ—‹è½¬90Â°
+bouDotxy(:,1) = -bouDotxy(:,1); % æ°´å¹³ç¿»è½¬
+bouDotxy(:,[1 2]) = bouDotxy(:,[2 1]); % äº¤æ¢xy
+% æ— ç”»é¢çš„ç‚¹
 bouDotxy(isnan(bouDotxy)) = 0;
 
-%% »æÖÆPSD
-% ²é¿´ÆµÆ×·¶Î§,´ó²¿·ÖÄÜÁ¿Ó¦ÔÚÌıÓòÄÚ(20Hz~20kHz)
-winlen = 2*Fs; % ´°³¤¶È
-window = hanning(winlen, 'periodic'); % ´°¿Úº¯Êı
-noverlap = winlen/2; % Êı¾İÖØµş
-nfft = winlen; % FFTµãÊı
+%% ç»˜åˆ¶PSD
+% æŸ¥çœ‹é¢‘è°±èŒƒå›´,å¤§éƒ¨åˆ†èƒ½é‡åº”åœ¨å¬åŸŸå†…(20Hz~20kHz)
+winlen = 2*Fs; % çª—é•¿åº¦
+window = hanning(winlen, 'periodic'); % çª—å£å‡½æ•°
+noverlap = winlen/2; % æ•°æ®é‡å 
+nfft = winlen; % FFTç‚¹æ•°
 [pxx, f] = pwelch(bouDotxy, window, noverlap, nfft, Fs, 'onesided');
 semilogx(f, pxx)
-xlabel('ÆµÂÊ(Hz)')
-ylabel('¹¦ÂÊ')
+xlabel('é¢‘ç‡(Hz)')
+ylabel('åŠŸç‡')
 
-%% Êä³öÒôÆµÎÄ¼ş
-disp('Êä³ö...')
+%% è¾“å‡ºéŸ³é¢‘æ–‡ä»¶
+disp('è¾“å‡º...')
 audiowrite([wavPath wavFile], bouDotxy, Fs)
 
