@@ -17,13 +17,13 @@ vidWidth = Vid.Width; % 宽度
 Vid.CurrentTime = 0; % 指定应在距视频开头多少秒的位置开始读取
 WHR = vidWidth/vidHeight;
 
-dotNumPF = Fs/vidFrameRate; % 每帧点数
+dotNumPF = round(Fs/vidFrameRate); % 每帧点数
 dotNum = dotNumPF/scanNumPF; % 每次扫描点数
 
 %% 读取帧并处理
 disp('正在处理帧...');
 Fig = waitbar(0,'正在处理帧...');
-bouDotxy = cell(dotNumPF*nFrames, 1);
+bouDotxy = cell(nFrames, 1);
 p0 = [(1024/WHR+1)/2, (1024+1)/2];
 k = 1;
 while hasFrame(Vid)
@@ -31,8 +31,9 @@ while hasFrame(Vid)
     vidFrame = im2double(vidFrame);
     vidFrame = rgb2gray(vidFrame);
     vidFrame = imresize(vidFrame,[NaN 1024]);
-    vidFrame = imgaussfilt(vidFrame, 1024/dotNum) >= 0.5; % 滤波
-    vidFrame = edge(double(vidFrame), 'Canny'); % 边缘检测
+    vidFrame = imgaussfilt(vidFrame, 1024/dotNum); % 滤波
+%     vidFrame = imbinarize(vidFrame); % 二值化
+    vidFrame = edge(double(vidFrame), 'Canny', [0.1 0.2]); % 边缘检测
     Bou = bwboundaries(vidFrame); % 获取边界坐标
 
     % 优化顺序
