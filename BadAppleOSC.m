@@ -1,10 +1,11 @@
 clear,clc,close all
-% 输入一个视频,输出其二值化后边缘点的坐标组成的波形文件
+% 输入一个视频,输出其边缘点的坐标组成的波形文件
 % 左声道:水平坐标
 % 右声道:垂直坐标
 scanNumPF = 2; % 每帧扫描次数
 Fs = 48e3; % 采样率
-[vidFile, vidPath] = uigetfile('*.avi;*.mp4', '选择视频文件', '22118703_5_0.mp4');
+[vidFile, vidPath] = uigetfile('*.avi;*.mpg;*.wmv;*.mp4;*.m4v;*.mov;*.mkv',...
+    '选择视频文件', '22118703_5_0.mp4');
 [wavFile, wavPath] = uiputfile({'*.wav';'*.flac'}, '保存音频文件', 'PlayMe');
 
 %% 读取视频文件
@@ -18,7 +19,7 @@ Vid.CurrentTime = 0; % 指定应在距视频开头多少秒的位置开始读取
 WHR = vidWidth/vidHeight;
 
 dotNumPF = round(Fs/vidFrameRate); % 每帧点数
-dotNum = dotNumPF/scanNumPF; % 每次扫描点数
+dotNum = round(dotNumPF/scanNumPF); % 每次扫描点数
 
 %% 读取帧并处理
 disp('正在处理帧...');
